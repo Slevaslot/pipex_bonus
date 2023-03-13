@@ -6,7 +6,7 @@
 /*   By: slevaslo <slevaslo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:48:01 by slevaslo          #+#    #+#             */
-/*   Updated: 2023/03/13 18:40:37 by slevaslo         ###   ########.fr       */
+/*   Updated: 2023/03/13 19:18:21 by slevaslo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	main(int argc, char **argv, char **envp)
 	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
 	{
 		data.is_here_doc = 3;
-		here_doc("test", &data);
+		here_doc_test("test", &data);
 		data.fd_in = data.here_doc[0];
 	}
 	else
@@ -123,3 +123,4 @@ int	main(int argc, char **argv, char **envp)
 	close(data.fd_out);
 	return (0);
 }
+

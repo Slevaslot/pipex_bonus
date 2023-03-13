@@ -122,3 +122,32 @@ int	here_doc(char *limiter, data *data)
 	// }
 	return(0);
 }
+int here_doc_test(char *limiter, data *data)
+{
+   char buffer[100];
+   (void)limiter;
+   int n;
+   int i = 0;
+//    (void)data;
+   // écrire la chaîne "pipe heredoc>"
+   write(STDOUT_FILENO, "pipe heredoc>", 13);
+   // lire l'entrée utilisateur dans une boucle
+   while ((n = read(STDIN_FILENO, buffer, sizeof(buffer))) > 0) {
+       // faire quelque chose avec la ligne lue
+       // ...
+		// write(data->here_doc[0], &test, n);
+		write(data->here_doc[1], buffer, n);
+       // réinitialiser le tampon pour la prochaine lecture
+       i = 0;
+		while(i < n)
+		{
+			buffer[i] = '\0';
+			i++;
+		}
+		i = 0;
+       // écrire de nouveau la chaîne "pipe heredoc>"
+       write(STDOUT_FILENO, "pipe heredoc>", 13);
+   }
+
+   return 0;
+}

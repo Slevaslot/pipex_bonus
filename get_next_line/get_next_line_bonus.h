@@ -6,7 +6,7 @@
 /*   By: slevaslo <slevaslo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:15:32 by slevaslo          #+#    #+#             */
-/*   Updated: 2023/03/13 17:15:53 by slevaslo         ###   ########.fr       */
+/*   Updated: 2023/03/13 18:55:37 by slevaslo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,5 @@ char	*new_line(char *str);
 void	*ft_calloc_for_gnl(size_t count, size_t size);
 char	*get_next_line(int fd);
 void	ft_bzero(void *ptr, size_t count);
+
 #endif

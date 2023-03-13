@@ -6,7 +6,7 @@
 /*   By: slevaslo <slevaslo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 17:47:35 by slevaslo          #+#    #+#             */
-/*   Updated: 2023/03/13 17:05:32 by slevaslo         ###   ########.fr       */
+/*   Updated: 2023/03/13 18:55:41 by slevaslo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ char	*path_is_ok(char **paths, char *cmd);
 void	process(char **argv, char **envp, data *data1);
 char	*ft_strjoin(char const *s1, char const *s2);
 int	here_doc_01(char *limit, data *data);
+int here_doc_test(char *limiter, data *data);
 
 
 #endif
