@@ -6,14 +6,16 @@
 /*   By: slevaslo <slevaslo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 17:47:35 by slevaslo          #+#    #+#             */
-/*   Updated: 2023/03/10 19:12:09 by slevaslo         ###   ########.fr       */
+/*   Updated: 2023/03/13 17:05:32 by slevaslo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
-
-# include "../libftprintfgnl/libftprintfgnl.h"
+#include "libft/libft.h"
+#include "get_next_line/get_next_line.h"
+#include <stddef.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 
@@ -23,7 +25,8 @@ typedef struct data
 	int cmds;
 	int fd_out;
 	int fd_in;
-	int here_doc;
+	int here_doc[2];
+	int is_here_doc;
 }
 data;
 
@@ -38,7 +41,8 @@ void	exec_process(char *str, char **envp);
 // char	*ft_june(const char *str);
 void	not_find(char **mycmdargs);
 void	error(void);
-int		here_doc(char *limit);
+int	here_doc(char *limit, data *data);
+void	ft_freetab(char **str);
 // char	*str_remove_whitespace(char *str);
 // void	ft_putstr_fd(char *str, int fd);
 // void	clearmem(char **str);
@@ -46,6 +50,8 @@ int		here_doc(char *limit);
 char	*find_path(char *cmd, char **envp);
 char	*path_is_ok(char **paths, char *cmd);
 void	process(char **argv, char **envp, data *data1);
+char	*ft_strjoin(char const *s1, char const *s2);
+int	here_doc_01(char *limit, data *data);
 
 
 #endif

@@ -6,11 +6,37 @@
 /*   By: slevaslo <slevaslo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 17:38:08 by slevaslo          #+#    #+#             */
-/*   Updated: 2023/03/10 19:16:34 by slevaslo         ###   ########.fr       */
+/*   Updated: 2023/03/13 14:35:40 by slevaslo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	int		i;
+	int		j;
+	char	*str;
+
+	i = 0;
+	j = 0;
+	if (!s1 || !s2)
+		return (NULL);
+	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!str)
+		return (NULL);
+	while (s1[i])
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	while (s2[j])
+	{
+		str[i + j] = s2[j];
+		j++;
+	}
+	str[i + j] = '\0';
+	return (str);
+}
 
 char	*path_is_ok(char **paths, char *cmd)
 {
@@ -58,54 +84,6 @@ char	*find_path(char *cmd, char **envp)
 	return (str);
 }
 
-int	here_doc(char *limit)
-{
-	char	*buffer;
-	int		here_doc[2];
-
-	pipe(here_doc);
-	limit = ft_strjoin(limit, "\n");
-	if (!limit)
-		return(free(limit), 0);
-	buffer = get_next_line(0);
-	while (1)
-	{
-		buffer = get_next_line(0);
-		if(ft_strncmp(buffer, limit, ft_strlen(limit)) == 0)
-			break ;
-		ft_putstr_fd(buffer, here_doc[1]);
-	}
-	close(here_doc[0]);
-	return (here_doc[0]);
-}
-
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	int		i;
-	int		j;
-	char	*str;
-
-	i = 0;
-	j = 0;
-	if (!s1 || !s2)
-		return (NULL);
-	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (!str)
-		return (NULL);
-	while (s1[i])
-	{
-		str[i] = s1[i];
-		i++;
-	}
-	while (s2[j])
-	{
-		str[i + j] = s2[j];
-		j++;
-	}
-	str[i + j] = '\0';
-	return (str);
-}
 
 void	error(void)
 {
