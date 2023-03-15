@@ -30,11 +30,11 @@ void	dupncloses(int i, int pipes[2], data *data)
 {
 	if (i == 0)
 	{
-		close(data->here_doc[0]);
-		close(data->here_doc[1]);
 		dup2(data->fd_in, STDIN_FILENO);
 		dup2(pipes[1], STDOUT_FILENO);
 		close(data->fd_in);
+		if (data->is_here_doc == 1)
+			close(data->here_doc[0]);
 		close(pipes[1]);
 	}
 	else if (i == data->cmds - 1)
@@ -83,7 +83,7 @@ void	process(char **argv, char **envp, data *data)
 		else if (pid == 0)
 		{
 			dupncloses(i, pipes, data);
-			exec_process(argv[i + 2], envp);
+			exec_process(argv[i + (2 + data->is_here_doc)], envp);
 		}
 		close(pipes[1]);
 		savencloses(i, pipes, data);
@@ -106,16 +106,15 @@ int	main(int argc, char **argv, char **envp)
 	data.fd_out = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
 	{
-		data.is_here_doc = 3;
-		here_doc_test("test", &data);
-		data.fd_in = data.here_doc[0];
+		data.is_here_doc = 1;
+		here_doc(argv[2], &data);
 	}
 	else
 	{
 		data.fd_in = open(argv[1], O_RDONLY);
 		data.is_here_doc = 0;
 	}
-	data.cmds = argc - 3;
+	data.cmds = argc - (3 + data.is_here_doc);
 	if (data.fd_out == -1 || data.fd_in == -1)
 		error();
 	process(argv, envp, &data);

@@ -41,7 +41,6 @@ void	exec_process(char *str, char **envp);
 // char	*ft_june(const char *str);
 void	not_find(char **mycmdargs);
 void	error(void);
-int	here_doc(char *limit, data *data);
 void	ft_freetab(char **str);
 // char	*str_remove_whitespace(char *str);
 // void	ft_putstr_fd(char *str, int fd);
@@ -51,8 +50,8 @@ char	*find_path(char *cmd, char **envp);
 char	*path_is_ok(char **paths, char *cmd);
 void	process(char **argv, char **envp, data *data1);
 char	*ft_strjoin(char const *s1, char const *s2);
-int	here_doc_01(char *limit, data *data);
-int here_doc_test(char *limiter, data *data);
+void	here_doc(char *argv, data *data);
+
 
 
 #endif

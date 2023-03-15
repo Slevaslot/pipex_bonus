@@ -57,97 +57,59 @@ char* lire_entree() {
     return chaine;
 }
 
-int	here_doc_01(char *limit, data *data)
+void	here_doc_02(char *argv, data *data)
 {
-	char	*buffer;
-	buffer = malloc(sizeof(char ) * 5000);
-	pipe(data->here_doc);
-	limit = ft_strjoin(limit, "\n");
-	if (!limit)
-		return(free(limit), 0);
-	buffer = lire_entree();
-	ft_putstr_fd(buffer, data->here_doc[1]);
-	return (0);
-}
-
-int	here_doc(char *limiter, data *data)
-{
-	char	*buffer;
-	size_t	i;
-	size_t	j;
-
-	j = 0;
-	i = 0;
-	pipe(data->here_doc);
-	limiter = ft_strjoin(limiter, "\n");
-	if (!limiter)
-		return(free(limiter), 0);
-	buffer = get_next_line(0);
-	while (buffer[i])
+	int		file;
+	char	*buf;
+	// (void)argv;
+	file = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 777);
+	if (file < 0)
+		ft_putstr_fd("ERR_HEREDOC", 2);
+	while (1)
 	{
-		if (buffer[i] == limiter[j])
-		{
-			while(buffer[i] == limiter[j])
-			{
-				i++;
-				j++;
-			}
-			if (j == ft_strlen(limiter))
-				return (0);
-			i = i - j;
-			j = 0;
-		}
-		write (data->here_doc[1], &buffer[i], 1);
-		i++;
+		write(1, "heredoc> ", 9);
+		buf = get_next_line(0);
+		if (!buf)
+			break ;
+		if (!ft_strncmp(argv, buf, ft_strlen(argv)))
+			break ;
+		ft_putstr_fd(buf, file);
+		// write(file, "\n", 1);
+		free(buf);
 	}
-	// while((buffer = get_next_line(0)))
-	// {
-	// 	ft_putstr_fd(buffer,data->here_doc[1]);
-	// 	if(buffer[i] == limiter[j])
-	// 	{
-	// 		while(buffer[i] == limiter[j])
-	// 		{
-	// 			i++;
-	// 			j++;
-	// 		}
-	// 		if (j == ft_strlen(limiter))
-	// 			break ;
-	// 		else
-	// 		{
-	// 			j = 0;
-	// 			i = 0;
-	// 		}
-
-	// 	}
-	// }
-	return(0);
+	free(buf);
+	close(file);
+	data->fd_in = open(".heredoc_tmp", O_RDONLY);
+	if (data->fd_in < 0)
+	{
+		error();
+		ft_putstr_fd("ERR_HEREDOC", 2);
+	}
 }
-int here_doc_test(char *limiter, data *data)
+
+void	here_doc(char *argv, data *data)
 {
-   char buffer[100];
-   (void)limiter;
-   int n;
-   int i = 0;
-//    (void)data;
-   // écrire la chaîne "pipe heredoc>"
-   write(STDOUT_FILENO, "pipe heredoc>", 13);
-   // lire l'entrée utilisateur dans une boucle
-   while ((n = read(STDIN_FILENO, buffer, sizeof(buffer))) > 0) {
-       // faire quelque chose avec la ligne lue
-       // ...
-		// write(data->here_doc[0], &test, n);
-		write(data->here_doc[1], buffer, n);
-       // réinitialiser le tampon pour la prochaine lecture
-       i = 0;
-		while(i < n)
-		{
-			buffer[i] = '\0';
-			i++;
-		}
-		i = 0;
-       // écrire de nouveau la chaîne "pipe heredoc>"
-       write(STDOUT_FILENO, "pipe heredoc>", 13);
-   }
-
-   return 0;
+	char	*buf;
+	pipe(data->here_doc);
+	while (1)
+	{
+		write(1, "heredoc> ", 9);
+		buf = get_next_line(0);
+		if (!buf)
+			break ;
+		if (!ft_strncmp(argv, buf, ft_strlen(argv)))
+			break ;
+		ft_putstr_fd(buf, data->here_doc[1]);
+		// write(file, "\n", 1);
+		free(buf);
+	}
+	free(buf);
+	close(data->here_doc[1]);
+	data->fd_in = data->here_doc[0];
+	if (data->fd_in < 0)
+	{
+		error();
+		ft_putstr_fd("ERR_HEREDOC", 2);
+	}
 }
+
